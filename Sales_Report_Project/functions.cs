@@ -15,7 +15,6 @@ namespace Sales_Report_Project
 
         public functions()
         {
-            //connects to Nationwide database in MySql
             string connectionstring = "server=localhost;user=root;password=root;database=sales";
             con = new MySqlConnection(connectionstring);
             con.Open();
@@ -35,12 +34,88 @@ namespace Sales_Report_Project
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
 
             data.Close();
-            cmd.CommandText = $"insert into sales_report values('{newSaleID}', '{prodName}', '{quantity}', '{price}', '{currentDate}')";
+            cmd.CommandText = $"insert into sales_report values({newSaleID}, '{prodName}', {quantity}, {price}, '{currentDate}')";
             cmd.ExecuteNonQuery();
 
-            Console.ReadLine();
             data.Close();
         }
 
+        public void prodByYear()
+        {
+            Console.WriteLine("See products sold by year");
+            Console.WriteLine("Select year: (YYYY) ");
+            string YrSelected = Console.ReadLine();
+
+            string sqlSelect = $"select * from sales_report where substr(SaleDate, 1,4)='{YrSelected}'";
+            showData(sqlSelect);
+            Console.ReadLine();
+
+
+        }
+
+        public void prodByMonthYear()
+        {
+            Console.WriteLine("See products sold by month in year");
+            Console.WriteLine("Select month: (MM)");
+            string MthSelected = Console.ReadLine();
+            Console.WriteLine("Select year: (YYYY)");
+            string YrSelected = Console.ReadLine();
+
+            string sqlSelect = $"select * from sales_report where substr(SaleDate, 6,2)='{MthSelected}' && substr(SaleDate, 1,4)='{YrSelected}'";
+            showData(sqlSelect);
+            Console.ReadLine();
+
+        }
+
+        public void totalSalesYear()
+        {
+            Console.WriteLine("See total sales by year");
+            Console.WriteLine("Select year: (YYYY) ");
+            string YrSelected = Console.ReadLine();
+
+            string sqlSelect = $"select count(*) from sales_report where substr(SaleDate, 1,4)='{YrSelected}'";
+            showData2(sqlSelect);
+            Console.ReadLine();
+
+
+        }
+
+        public void totalSalesMonthYear()
+        {
+            Console.WriteLine("See total sales by month in year");
+            Console.WriteLine("Select month: (MM)");
+            string MthSelected = Console.ReadLine();
+            Console.WriteLine("Select year: (YYYY)");
+            string YrSelected = Console.ReadLine();
+
+            string sqlSelect = $"select count(*) from sales_report where substr(SaleDate, 6, 2)='{MthSelected}' && substr(SaleDate, 1,4)='{YrSelected}'";
+            showData2(sqlSelect);
+            Console.ReadLine();
+
+        }
+
+        private void showData(string sqlSelect)
+        {
+
+            cmd.CommandText = sqlSelect;
+            MySqlDataReader data = cmd.ExecuteReader();
+            while (data.Read())
+            {
+                Console.WriteLine($"{data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]}");
+            }
+            Console.Read();
+        }
+
+        private void showData2(string sqlSelect)
+        {
+
+            cmd.CommandText = sqlSelect;
+            MySqlDataReader data = cmd.ExecuteReader();
+            while (data.Read())
+            {
+                Console.WriteLine(data[0] + " Sales made");
+            }
+            Console.Read();
+        }
     }
 }

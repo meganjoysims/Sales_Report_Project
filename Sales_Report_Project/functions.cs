@@ -46,10 +46,11 @@ namespace Sales_Report_Project
             Console.WriteLine("Select year: (YYYY) ");
             string YrSelected = Console.ReadLine();
 
+            Console.WriteLine("");
+            Console.WriteLine("Sale ID, Product Name, Quantity, Price, Sale Date");
             string sqlSelect = $"select * from sales_report where substr(SaleDate, 1,4)='{YrSelected}'";
             showData(sqlSelect);
             Console.ReadLine();
-
 
         }
 
@@ -61,6 +62,8 @@ namespace Sales_Report_Project
             Console.WriteLine("Select year: (YYYY)");
             string YrSelected = Console.ReadLine();
 
+            Console.WriteLine("");
+            Console.WriteLine("Sale ID, Product Name, Quantity, Price, Sale Date");
             string sqlSelect = $"select * from sales_report where substr(SaleDate, 6,2)='{MthSelected}' && substr(SaleDate, 1,4)='{YrSelected}'";
             showData(sqlSelect);
             Console.ReadLine();
@@ -73,7 +76,7 @@ namespace Sales_Report_Project
             Console.WriteLine("Select year: (YYYY) ");
             string YrSelected = Console.ReadLine();
 
-            string sqlSelect = $"select count(*) from sales_report where substr(SaleDate, 1,4)='{YrSelected}'";
+            string sqlSelect = $"select sum(quantity*price) from sales_report where substr(SaleDate, 1,4)='{YrSelected}'";
             showData2(sqlSelect);
             Console.ReadLine();
 
@@ -88,7 +91,7 @@ namespace Sales_Report_Project
             Console.WriteLine("Select year: (YYYY)");
             string YrSelected = Console.ReadLine();
 
-            string sqlSelect = $"select count(*) from sales_report where substr(SaleDate, 6, 2)='{MthSelected}' && substr(SaleDate, 1,4)='{YrSelected}'";
+            string sqlSelect = $"select sum(quantity*price) from sales_report where substr(SaleDate, 6, 2)='{MthSelected}' && substr(SaleDate, 1,4)='{YrSelected}'";
             showData2(sqlSelect);
             Console.ReadLine();
 
@@ -104,8 +107,10 @@ namespace Sales_Report_Project
                 Console.WriteLine($"{data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]}");
             }
             Console.Read();
-        }
 
+            data.Close();
+        }
+        
         private void showData2(string sqlSelect)
         {
 
@@ -113,9 +118,12 @@ namespace Sales_Report_Project
             MySqlDataReader data = cmd.ExecuteReader();
             while (data.Read())
             {
-                Console.WriteLine(data[0] + " Sales made");
+                
+                Console.WriteLine("£" + data[0] + " earned this year");
             }
             Console.Read();
+
+            data.Close();
         }
     }
 }

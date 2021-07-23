@@ -45,7 +45,7 @@ namespace Sales_Report_Project
             Console.WriteLine("");
             Console.WriteLine("********Add Sales Data********");
             Console.WriteLine("Information required to add data to sales report:");
-            Console.WriteLine("Sale ID, Product Name, Quantity Sold, Price");
+            Console.WriteLine("Product Name, Quantity Sold, Price");
             Console.WriteLine("");
 
             string choice = "Y";
@@ -67,6 +67,11 @@ namespace Sales_Report_Project
                 Console.WriteLine("Data added! Do you want to add more? (Y/N)");
                 choice = Console.ReadLine();
             }
+
+            while (choice !="Y" || choice != "y")
+            {
+                MainMenu();
+            }
         }
 
         public void ReportsMenu()
@@ -87,22 +92,31 @@ namespace Sales_Report_Project
             if (ch2 == 1)
             {
                 f.prodByYear();
+                MainMenu();
+
+
             }
 
             if (ch2 == 2)
             {
                 f.prodByMonthYear();
+                MainMenu();
+                
 
             }
 
             if (ch2 == 3)
             {
                 f.totalSalesYear();
+                MainMenu();
+                
             }
 
             if (ch2 == 4)
             {
                 f.totalSalesMonthYear();
+                MainMenu();
+
             }
 
             if (ch2 == 5)
